@@ -6,18 +6,18 @@ $info=($_POST && $errors)?Format::htmlchars($_POST):array();
 $dept = $ticket->getDept();
 
 if ($ticket->isClosed() && !$ticket->isReopenable())
-    $warn = __('This ticket is marked as closed and cannot be reopened.');
+    $warn = __('This request is marked as complete and cannot be reopened.');
 
 //Making sure we don't leak out internal dept names
 if(!$dept || !$dept->isPublic())
     $dept = $cfg->getDefaultDept();
 
-if ($thisclient && $thisclient->isGuest()
+if (false && $thisclient && $thisclient->isGuest()
     && $cfg->isClientRegistrationEnabled()) { ?>
 
 <div id="msg_info">
     <i class="icon-compass icon-2x pull-left"></i>
-    <strong><?php echo __('Looking for your other tickets?'); ?></strong></br>
+    <strong><?php echo __('Looking for your other requests?'); ?></strong></br>
     <a href="<?php echo ROOT_PATH; ?>login.php?e=<?php
         echo urlencode($thisclient->getEmail());
     ?>" style="text-decoration:underline"><?php echo __('Sign In'); ?></a>
@@ -31,8 +31,8 @@ if ($thisclient && $thisclient->isGuest()
     <tr>
         <td colspan="2" width="100%">
             <h1>
-                <?php echo sprintf(__('Ticket #%s'), $ticket->getNumber()); ?> &nbsp;
-                <a href="tickets.php?id=<?php echo $ticket->getId(); ?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
+                <?php echo sprintf(__('Request #%s'), $ticket->getNumber()); ?> &nbsp;
+                <!--<a href="tickets.php?id=<?php echo $ticket->getId(); ?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>-->
 <?php if ($cfg->allowClientUpdates()
         // Only ticket owners can edit the ticket details (and other forms)
         && $thisclient->getId() == $ticket->getUserId()) { ?>
@@ -46,7 +46,7 @@ if ($thisclient && $thisclient->isGuest()
         <td width="50%">
             <table class="infoTable" cellspacing="1" cellpadding="3" width="100%" border="0">
                 <tr>
-                    <th width="100"><?php echo __('Ticket Status');?>:</th>
+                    <th width="100"><?php echo __('Request Status');?>:</th>
                     <td><?php echo $ticket->getStatus(); ?></td>
                 </tr>
                 <tr>
@@ -164,7 +164,7 @@ if (!$ticket->isClosed() || $ticket->isReopenable()) { ?>
             <td colspan="2">
                 <?php
                 if($ticket->isClosed()) {
-                    $msg='<b>'.__('Ticket will be reopened on message post').'</b>';
+                    $msg='<b>'.__('The request will be reopened on message post').'</b>';
                 } else {
                     $msg=__('To best assist you, we request that you be specific and detailed');
                 }
@@ -185,10 +185,10 @@ if (!$ticket->isClosed() || $ticket->isReopenable()) { ?>
             </td>
         </tr>
     </table>
-    <p style="padding-left:165px;">
-        <input type="submit" value="<?php echo __('Post Reply');?>">
-        <input type="reset" value="<?php echo __('Reset');?>">
-        <input type="button" value="<?php echo __('Cancel');?>" onClick="history.go(-1)">
+    <p style="">
+        <input class="btn btn-large" type="submit" value="<?php echo __('Post Reply');?>"> <br /><br />
+        <!-- <input class="btn btn-info" type="reset" value="<?php echo __('Reset');?>"> -->
+        <!--<input type="button" value="<?php echo __('Cancel');?>" onClick="history.go(-1)">-->
     </p>
 </form>
 <?php

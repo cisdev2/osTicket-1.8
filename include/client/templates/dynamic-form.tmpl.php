@@ -3,14 +3,14 @@
     // space below.
     // XXX: Would be nice to handle the decoration with a CSS class
     ?>
-    <tr><td colspan="2"><hr />
+   <!-- <tr><td colspan="2"><hr />
     <div class="form-header" style="margin-bottom:0.5em">
     <?php print ($form instanceof DynamicFormEntry) 
         ? $form->getForm()->getMedia() : $form->getMedia(); ?>
     <h3><?php echo Format::htmlchars($form->getTitle()); ?></h3>
     <em><?php echo Format::htmlchars($form->getInstructions()); ?></em>
     </div>
-    </td></tr>
+    </td></tr> -->
     <?php
     // Form fields, each with corresponding errors follows. Fields marked
     // 'private' are not included in the output for clients
@@ -32,11 +32,11 @@
             }
             $field->render('client'); ?>
             <?php if ($field->get('required')) { ?>
-                <font class="error">*</font>
+                <img src="/assets/default/images/icons/required.png" alt="Required" />
             <?php
             }
             if ($field->get('hint') && !$field->isBlockLevel()) { ?>
-                <br /><em style="color:gray;display:inline-block"><?php
+                <br /><em style="color:gray;display:inline-block;"><?php
                     echo Format::htmlchars($field->get('hint')); ?></em>
             <?php
             }

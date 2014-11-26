@@ -105,7 +105,7 @@ $info=Format::htmlchars(($errors && $_POST)?$_POST:$info);
          <tr>
             <td colspan=2 style="padding-left:3px;">
                 <textarea name="body" cols="21" rows="12" style="width:98%;" class="richtext draft"
-                    data-draft-namespace="page" data-draft-object-id="<?php echo $info['id']; ?>"
+                    data-draft-namespace="page" data-draft-object-id="<?php //echo $info['id']; ?>"
                     ><?php echo $info['body']; ?></textarea>
             </td>
         </tr>
@@ -128,4 +128,5 @@ $info=Format::htmlchars(($errors && $_POST)?$_POST:$info);
     <input type="reset"  name="reset"  value="<?php echo __('Reset'); ?>">
     <input type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick='window.location.href="pages.php"'>
 </p>
+<p style="font-weight:700;background:#f2acac;border: 1px solid #8d3636;padding:5px;">CIS Developer note: The &quot;rich-text&quot; editor is disabled on page editing because it does not allow for arbitrary HTML.</p>
 </form>

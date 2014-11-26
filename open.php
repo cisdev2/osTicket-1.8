@@ -20,6 +20,19 @@ $errors=array();
 if ($_POST) {
     $vars = $_POST;
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
+	
+	if(empty($vars['message'])) {
+		$vars['message'] = Topic::getTopicName($vars['topicId']);
+	}
+	$vars['subject'] = Topic::getTopicName($vars['topicId']);
+	
+	if($vars['autorespond']=='true') {
+		$vars['autorespond'] = true;
+	} else {
+		$vars['autorespond'] = false;
+	}
+	
+	
     if ($thisclient) {
         $vars['uid']=$thisclient->getId();
     } elseif($cfg->isCaptchaEnabled()) {
@@ -40,7 +53,7 @@ if ($_POST) {
     Draft::deleteForNamespace('ticket.client.'.substr(session_id(), -12));
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($vars, $errors, SOURCE))){
-        $msg=__('Support ticket request created');
+        $msg=__('Support request created');
         // Drop session-backed form data
         unset($_SESSION[':form-data']);
         //Logged in...simply view the newly created ticket.

@@ -312,9 +312,9 @@ $(document).ajaxError(function(event, request, settings) {
             if (redactor) {
                 clearInterval(redactor.autosaveInterval);
             }
-        });
+        });/*
         $('#overlay').show();
         alert(__('Unable to save draft. Refresh the current page to restore and continue your draft.'));
-        $('#overlay').hide();
+        $('#overlay').hide();*/
     }
 });

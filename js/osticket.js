@@ -10,7 +10,7 @@ $(document).ready(function(){
 
     //Overlay
     $('#overlay').css({
-        opacity : 0.3,
+        opacity : 0.6,
         top     : 0,
         left    : 0
      });
@@ -20,12 +20,19 @@ $(document).ready(function(){
         top  : ($(window).height() / 3),
         left : ($(window).width() / 2 - 160)
      });
+	 
+	 $( window ).resize(function() {
+        $("#loading").css({
+        top  : ($(window).height() / 3),
+        left : ($(window).width() / 2 - 160)
+     });
+    });
 
     $("form :input").change(function() {
         var fObj = $(this).closest('form');
         if(!fObj.data('changed')){
             fObj.data('changed', true);
-            $('input[type=submit]', fObj).css('color', 'red');
+            //$('input[type=submit]', fObj).css('color', 'red');
             $(window).bind('beforeunload', function(e) {
                 return __("Are you sure you want to leave? Any changes or info you've entered will be discarded!");
              });

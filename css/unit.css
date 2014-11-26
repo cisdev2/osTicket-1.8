@@ -1,0 +1,67 @@
+/* Unit editable CSS */
+
+/** Unit Bar background color **/
+#ubc7-unit {
+   /* background: #2F5D7C; */ /* For White on Blue, and Grey on White */
+   /* background: #002145; */ /* For Blue on White, and White on Grey */
+background:#b00000;
+}
+
+/** Social Icons **/
+#ubc7-unit-social-icons i {
+    color: #002145;
+}
+
+#clfcompatibilty {
+	padding: 1em;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.container, #ubc7-unit-menu .container {
+    max-width: 960px;
+}
+
+input, textarea, .uneditable-input {
+    width: auto;
+	max-width:550px;
+}
+
+select {
+	width: auto;
+	max-width:550px;
+}
+
+#ticketForm h1, #ticketForm h3 {
+	margin:0;
+}
+
+.nomargin {
+margin:0;
+}
+
+#ticketForm input, #ticketForm select {
+	margin:0;
+}
+
+.redactor_editor {
+	border: 1px solid #bbb;
+}
+
+.redactor_toolbar {
+	border: 1px solid #bbb;
+	box-shadow: none;
+}
+
+#reply {
+	padding: 10px 25px;
+}
+
+.leftinput {
+	text-align:center;
+	padding:0;
+}
+
+.leftinput input{
+	margin: 5px 5px 0 0;
+}

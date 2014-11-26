@@ -1,5 +1,14 @@
 <?php
 if(!defined('OSTCLIENTINC')) die('Access Denied!');
+
+$internalTopicId = $_GET['id'];
+$internalTopic = Topic::lookup($internalTopicId);
+if (!$internalTopic) {
+    $internalTopicId = NULL;
+}
+$internalSingleForm = isset($internalTopicId);
+
+
 $info=array();
 if($thisclient && $thisclient->isValid()) {
     $info=array('name'=>$thisclient->getName(),
@@ -13,6 +22,10 @@ $form = null;
 if (!$info['topicId'])
     $info['topicId'] = $cfg->getDefaultTopicId();
 
+if($internalSingleForm) {
+    $info['topicId'] = $internalTopicId;
+}
+	
 if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     $form = $topic->getForm();
     if ($_POST && $form) {
@@ -22,17 +35,18 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 }
 
 ?>
-<h1><?php echo __('Open a New Ticket');?></h1>
-<p><?php echo __('Please fill in the form below to open a new ticket.');?></p>
-<form id="ticketForm" method="post" action="open.php" enctype="multipart/form-data">
+<h1><?php if(!$internalSingleForm) { echo __('Submit a New Request'); } else { echo $topic->getName(); }?></h1>
+<p>Fields that have a <img src="/assets/default/images/icons/required.png" alt="Required" /> are mandatory.</p>
+<!--<p class="nomargin"><?php echo __('Please fill in the form below to submit a new request.');?></p>-->
+<form id="ticketForm" method="post" action="open.php<?php if($internalSingleForm) { echo '?id='.$internalTopicId;}?>" enctype="multipart/form-data">
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
   <table width="800" cellpadding="1" cellspacing="0" border="0">
     <tbody>
-    <tr>
-        <td class="required"><?php echo __('Help Topic');?>:</td>
+    <tr <?php if($internalSingleForm) {echo 'style="height:1px;border:none"';} ?>>
+        <td  class="required"><?php if(!$internalSingleForm) {echo __('Request Type:');}?></td>
         <td>
-            <select id="topicId" name="topicId" onchange="javascript:
+            <select <?php if($internalSingleForm) {echo 'style="display:none;"';} ?> id="topicId" name="topicId" onchange="javascript:
                     var data = $(':input[name]', '#dynamic-form').serialize();
                     $.ajax(
                       'ajax.php/form/help-topic/' + this.value,
@@ -44,7 +58,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                           $(document.head).append(json.media);
                         }
                       });">
-                <option value="" selected="selected">&mdash; <?php echo __('Select a Help Topic');?> &mdash;</option>
+                <option value="" <?php if(!$internalSingleForm) { ?>selected="selected"<?php } ?>>&mdash; <?php echo __('Select a Request Type');?> &mdash;</option>
                 <?php
                 if($topics=Topic::getPublicHelpTopics()) {
                     foreach($topics as $id =>$name) {
@@ -56,11 +70,11 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                 <?php
                 } ?>
             </select>
-            <font class="error">*&nbsp;<?php echo $errors['topicId']; ?></font>
+            <?php if(!$internalSingleForm) { ?><img src="/assets/default/images/icons/required.png" alt="Required" /><?php } ?> <font class="error"><?php echo $errors['topicId']; ?></font>
         </td>
     </tr>
 <?php
-        if (!$thisclient) {
+        if (true || !$thisclient) {
             $uform = UserForm::getUserForm()->getForm($_POST);
             if ($_POST) $uform->isValid();
             $uform->render(false);
@@ -102,16 +116,19 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     <tr><td colspan=2>&nbsp;</td></tr>
     </tbody>
   </table>
-<hr/>
+  <label class="leftinput" class="checkbox">
+			<input type="checkbox" name="autorespond" checked="checked" value="true"/> Send a Request Confirmation Email
+	</label>
   <p style="text-align:center;">
-        <input type="submit" value="<?php echo __('Create Ticket');?>">
-        <input type="reset" name="reset" value="<?php echo __('Reset');?>">
-        <input type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
+        <input class="btn btn-large" type="submit" value="<?php echo __('Create Request');?>">
+        <p style="text-align:center;">
+		<input class="btn btn-info" type="reset" name="reset" value="<?php echo __('Reset');?>">
+        <input class="btn btn-info" type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
             $('.richtext').each(function() {
                 var redactor = $(this).data('redactor');
                 if (redactor && redactor.opts.draftDelete)
                     redactor.deleteDraft();
             });
             window.location.href='index.php';">
-  </p>
+  </p></p>
 </form>

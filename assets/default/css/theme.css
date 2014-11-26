@@ -557,7 +557,7 @@ label.required {
 #clientLogin div textarea {
   width: auto;
   border: 1px solid #aaa;
-  background: #fff;
+  /*background: #fff;*/
   display: block;
 }
 #ticketForm div input[type=file],
