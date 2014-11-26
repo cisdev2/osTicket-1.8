@@ -1,3 +1,10 @@
+CISTicket
+========
+
+Modifications done to osTicket for the Centre for Instructional Support's (at UBC) helpdesk system.
+
+To view the files that have changed from osTicket, stay on this branch (cisticket) and view the commits since the branch was created (since commit c18eac40de95458ef3c6291f5f7bb7543bb1d086 ).
+
 osTicket
 ========
 <a href="http://osticket.com"><img src="http://osticket.com/sites/default/files/osTicket.jpg"
