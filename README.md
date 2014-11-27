@@ -3,7 +3,19 @@ CISTicket
 
 Modifications done to osTicket for the Centre for Instructional Support's (at UBC) helpdesk system.
 
-To view the files that have changed from osTicket, stay on this branch (cisticket) and view the commits since the branch was created (since commit c18eac40de95458ef3c6291f5f7bb7543bb1d086 ).
+To view the files that have changed from osTicket, stay on this branch (cisticket) and view the commits since the branch was created (since commit [c18eac40de95458ef3c6291f5f7bb7543bb1d086](https://github.com/cisdev2/osTicket-1.8/commit/c18eac40de95458ef3c6291f5f7bb7543bb1d086) ).
+
+Some key changes to note:
+- Integrated the UBC CLF to the client front-end (added the stylesheets and changed the header/footer include files for the client view)
+- Added some REGEXs to remove the "quoted/from/to" fields when emails are replied to
+- Changed "ticket" to "request" in all client views
+- Changed the front page so everything is edited through the admin panel
+- Disabled the rich text editor on page editing in the admin panel (to allow for arbitrary HTML)
+- Changed the open.php client page so if an `id` is passed through the URL, the form will pre-select the category (this in effect gives us a separate page for each type of request if we want to send people there directly)
+- Form styling changes (different colors, spacing/padding/margin, removed the red submit button effect, changed the look of the processing popup)
+- Removed the "draft saving" or "draft error" popups to avoid confusing faculty
+
+***The following is the original osTicket README from where the branch was created:***
 
 osTicket
 ========
