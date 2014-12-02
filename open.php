@@ -19,12 +19,12 @@ $ticket = null;
 $errors=array();
 if ($_POST) {
     $vars = $_POST;
-    $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
+    $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept junk...only topicId is expected.
 	
 	if(empty($vars['message'])) {
 		$vars['message'] = Topic::getTopicName($vars['topicId']);
 	}
-	$vars['subject'] = Topic::getTopicName($vars['topicId']);
+	$vars['subject'] = $vars['coursesubject'] . ' ' . Topic::getTopicName($vars['topicId']);
 	
 	if($vars['autorespond']=='true') {
 		$vars['autorespond'] = true;

@@ -65,3 +65,11 @@ margin:0;
 .leftinput input{
 	margin: 5px 5px 0 0;
 }
+
+.coursedigits {
+    display: none;
+}
+
+.deptnamecopy {
+    display: none;
+}
