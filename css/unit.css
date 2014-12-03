@@ -73,3 +73,9 @@ margin:0;
 .deptnamecopy {
     display: none;
 }
+
+#ubc7-unit {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
