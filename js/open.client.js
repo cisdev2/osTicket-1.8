@@ -11,13 +11,18 @@ $(document).ready(function(){
              '[' + $(".deptnamesrc option:selected").text() +
              (($('.courseno').length > 0 && $('.courseno').val().length==3) ? ' ' + $('.courseno').val() : '') + ']'
          );
+        // if there is no number provided, goes to [DEPT] instead of [DEPT XXX]
     }
     
 	// Copy the department name down by the course number
     $('.deptnamesrc').change(function() {
-        $('.deptname').attr('value',$(".deptnamesrc option:selected").text());
-        $('.deptnamevalue').val($(".deptnamesrc option:selected").val());
-        updateCourseSubject();
+        if($(".deptnamesrc option:selected").text()!="— Select —") {
+            // copy the department to the box beside the number entry
+            $('.deptname').attr('value',$(".deptnamesrc option:selected").text());
+            // copy the department to the duplicated hidden field
+            $('.deptnamevalue').val($(".deptnamesrc option:selected").val());
+            updateCourseSubject();
+        }
     });
     
     $('.courseno').change(function() {
@@ -31,6 +36,8 @@ $(document).ready(function(){
             updateCourseSubject();
         }
     });
+    
+    $('.deptnamesrc').change(); //trigger right away (in the case where the form had an entry error)
 
 });
     

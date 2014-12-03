@@ -13,7 +13,7 @@ $searchTerm='';
 if($search) {
   $searchTerm=$_REQUEST['query'];
   if( ($_REQUEST['query'] && strlen($_REQUEST['query'])<3)
-      || (!$_REQUEST['query'] && isset($_REQUEST['basic_search'])) ){ //Why do I care about this crap...
+      || (!$_REQUEST['query'] && isset($_REQUEST['basic_search'])) ){
       $search=false; //Instead of an error page...default back to regular query..with no search.
       $errors['err']=__('Search term must be more than 3 chars');
       $searchTerm='';
@@ -304,8 +304,24 @@ if ($results) {
     }
 }
 
-//YOU BREAK IT YOU FIX IT.
 ?>
+<!-- SEARCH FORM START -->
+<div id='course_search'>
+    <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/course.search.js"></script>
+    <table>
+        <tr>
+            <td class="searchdesc"><form><strong>Course search: </strong><input placeholder="apsc.150" type="text" size=30 value=""
+                autocomplete="off" autocorrect="off" autocapitalize="off"></form></td>
+            <td>
+                <button type="button" class="button"><?php echo __('Search'); ?></button>
+                <img class="courseloading hidden" src="./images/ajax-loader.gif" width="16" height="16" />
+                
+            </td>
+            <td style="font-size:0.9em"><strong class="nocourseresults hidden">No Results. </strong>For a numerical wildcard, use <em>x</em> or blanks. The dot is optional or can be a space.</td>
+        </tr>
+    </table>
+    
+</div>
 <!-- SEARCH FORM START -->
 <div id='basic_search'>
     <form action="tickets.php" method="get">
@@ -313,7 +329,7 @@ if ($results) {
     <input type="hidden" name="a" value="search">
     <table>
         <tr>
-            <td><input type="text" id="basic-ticket-search" name="query" size=30 value="<?php echo Format::htmlchars($_REQUEST['query']); ?>"
+            <td class="searchdesc"><strong>Regular search: </strong><input type="text" id="basic-ticket-search" name="query" size=30 value="<?php echo Format::htmlchars($_REQUEST['query']); ?>"
                 autocomplete="off" autocorrect="off" autocapitalize="off"></td>
             <td><input type="submit" name="basic_search" class="button" value="<?php echo __('Search'); ?>"></td>
             <td>&nbsp;&nbsp;<a href="#" id="go-advanced">[<?php echo __('advanced'); ?>]</a>&nbsp;<i class="help-tip icon-question-sign" href="#advanced"></i></td>

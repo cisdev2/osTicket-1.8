@@ -6,6 +6,7 @@ Modifications done to osTicket for the Centre for Instructional Support's (at UB
 To view the files that have changed from osTicket, stay on this branch (cisticket) and view the commits since the branch was created (since commit [c18eac40de95458ef3c6291f5f7bb7543bb1d086](https://github.com/cisdev2/osTicket-1.8/commit/c18eac40de95458ef3c6291f5f7bb7543bb1d086) ).
 
 Some key changes to note:
+- Course Number capture and search (see separate section below)
 - Integrated the UBC CLF to the client front-end (added the stylesheets and changed the header/footer include files for the client view)
 - Added some REGEXs to remove the "quoted/from/to" fields when emails are replied to
 - Changed "ticket" to "request" in all client views
@@ -14,6 +15,40 @@ Some key changes to note:
 - Changed the open.php client page so if an `id` is passed through the URL, the form will pre-select the category (this in effect gives us a separate page for each type of request if we want to send people there directly)
 - Form styling changes (different colors, spacing/padding/margin, removed the red submit button effect, changed the look of the processing popup)
 - Removed the "draft saving" or "draft error" popups to avoid confusing faculty
+- In general, most new CSS is added in unit.css (to avoid editing the core CLF and OsTicket themes)
+
+Course number capture and search
+--------------------------
+
+General idea:
+- To create new "search-able" items, they need to be added to the "additional request details" form and **have to be dropdowns**
+- Since we want to put the department and course number higher in the form, we put them there and then duplicate their values into some hidden fields
+- To deal with numbers, there are three digit dropdowns corresponding to the three digits of the course
+
+Key technical points:
+- The "additional request details" form must have fields with variables ***"xoo", "oxo", and "oox"*** that are all dropdowns of "digits" to catch the course number values
+- The "Contact info" form needs to have field with variable "program" that has a dropdown of "programs" (used to inject the department name into the course)
+- The "additional request details" form must have a field with variable "deptnamecopy" that is a dropdown of "programs" (the dept name will get copied here from the above point so we can search by it)
+- Any form that wants to make use of course search needs to have a field for the course number with the following details (THESE ARE MUSTS): 
+  - Variable: ***courseno*** (this is how the code recognizes that this is the special number box)
+  - Visibility: required
+  - Configuration options: size=3,max-length=3,
+  - Configuration regex: /\d\d\d/iu  (from the / to the u, inclusive)
+  - Recommended help-text: "If your request involves many courses, use the the lowest course number and list the rest in additional information. If your course has a suffix or refers to a specific section,  enter it under the additional information."
+  - Recommended error-message: "Please enter 3 digits. See the help text for more info."
+- If no course number field is included, the ticket will still be searchable by department and will be tagged [DEPT] instead of [DEPT XXX]
+
+Client side: 
+- Modified the code that generates the form to add CSS classes to the special form items. Some of these classes cause the (duplicate) fields to be hidden visually (but they are still in the form)
+- Added some Javascript that copies the department in the first dropdown into all the appropriate places (including the hidden fields)
+- Added some Javascript that takes the digits the user enters and injects them into the 3 digit dropdowns (which are hidden from the user)
+
+Staff side:
+- Added a form in the HTML to serve as the course search
+- Added Javascript that takes the form entry, parses it, injects it into the hidden advanced search form (hidden by default) and then triggers the hidden "submit" button
+
+Original README
+--------------------------
 
 ***The following is the original osTicket README from where the branch was created:***
 

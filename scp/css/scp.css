@@ -1956,3 +1956,10 @@ table.custom-info td {
 .required {
     font-weight: bold;
 }
+
+/* CISTICKET ADDITIONS */
+
+.searchdesc strong {
+    display: inline-block;
+    min-width: 110px;
+}
