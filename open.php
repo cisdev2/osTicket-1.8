@@ -22,7 +22,7 @@ if ($_POST) {
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept junk...only topicId is expected.
 	
 	if(empty($vars['message'])) {
-		$vars['message'] = Topic::getTopicName($vars['topicId']);
+		$vars['message'] = $vars['coursesubject'] . ' ' . Topic::getTopicName($vars['topicId']);
 	}
 	$vars['subject'] = $vars['coursesubject'] . ' ' . Topic::getTopicName($vars['topicId']);
 	
