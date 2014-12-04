@@ -1343,10 +1343,14 @@ class ThreadBody /* extends SplString */ {
 			
 			// http://www.regexr.com/
 			
-			// for gmail footers
+			// for gmail footers with html
 			// regex: <div class="gmail_extra">.*
 			$this->body = preg_replace('/<div class="gmail_extra">.*/si',"",$this->body);
-			
+            
+            // for gmail footers, raw text
+            // regex: On .*wrote:(.|\n)*
+            $this->body = preg_replace('/On .*wrote:(.|\n)*/si',"",$this->body);
+            
 			// for outlook footers
 			// regex: <p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>
 			$this->body = preg_replace('/<p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>/si',"",$this->body);
