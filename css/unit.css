@@ -79,3 +79,9 @@ margin:0;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+#ticketForm table label {
+    margin: 6px 10px 0 0;
+    text-align: right;
+    font-weight: 700;
+}
