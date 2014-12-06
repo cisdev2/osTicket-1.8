@@ -35,6 +35,7 @@ $actions= array(
     foreach (TicketStatusList::getStatuses(
                 array('states' => $states))->all() as $status) {
         if (!isset($actions[$status->getState()])
+                || $status->getName() == "Resolved" //disable the resolved status
                 || $statusId == $status->getId())
             continue;
         ?>
