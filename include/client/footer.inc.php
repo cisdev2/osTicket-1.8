@@ -22,7 +22,7 @@
 
 				<div class="span4">
 				<p><strong>CIS Office</strong><br>
-				Room 2205 - <a href="http://www.maps.ubc.ca/PROD/index_detail.php?locat1=306">CEME Building</a><br> 
+				Room 1214 - <a href="http://www.maps.ubc.ca/PROD/index_detail.php?locat1=306">CEME Building</a><br> 
 				6250 Applied Science Lane<br>
 				Vancouver, BC Canada V6T 1Z4<br>
 				</p>
@@ -32,10 +32,9 @@
 				</div></div>	
 				</div><!-- #subsidiary .aside -->
 		</div>
-		
-        <!-- Footer Area Unit Menu - Mobile Only -->
-		<?php
+<?php 
 		/*
+        <!-- Footer Area Unit Menu - Mobile Only -->
         <div id="ubc7-unit-alternate-navigation" class="navbar expand visible-phone" role="navigation">
             <div class="navbar-inner expand">
                 <div class="container">
