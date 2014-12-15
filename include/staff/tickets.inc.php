@@ -307,7 +307,6 @@ if ($results) {
 ?>
 <!-- SEARCH FORM START -->
 <div id='course_search'>
-    <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/course.search.js"></script>
     <table>
         <tr>
             <td class="searchdesc"><form><strong>Course search: </strong><input placeholder="apsc.150" type="text" size=30 value=""
