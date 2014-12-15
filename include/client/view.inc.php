@@ -49,10 +49,10 @@ if (false && $thisclient && $thisclient->isGuest()
                     <th width="100"><?php echo __('Request Status');?>:</th>
                     <td><?php echo $ticket->getStatus(); ?></td>
                 </tr>
-                <tr>
+                <?php /*<tr>
                     <th><?php echo __('Department');?>:</th>
                     <td><?php echo Format::htmlchars($dept instanceof Dept ? $dept->getName() : ''); ?></td>
-                </tr>
+                </tr>*/?>
                 <tr>
                     <th><?php echo __('Create Date');?>:</th>
                     <td><?php echo Format::db_datetime($ticket->getCreateDate()); ?></td>
@@ -69,10 +69,11 @@ if (false && $thisclient && $thisclient->isGuest()
                    <th width="100"><?php echo __('Email');?>:</th>
                    <td><?php echo Format::htmlchars($ticket->getEmail()); ?></td>
                </tr>
+               <?php /*
                <tr>
                    <th><?php echo __('Phone');?>:</th>
                    <td><?php echo $ticket->getPhoneNumber(); ?></td>
-               </tr>
+               </tr> */?>
             </table>
        </td>
     </tr>
@@ -80,6 +81,20 @@ if (false && $thisclient && $thisclient->isGuest()
 <?php
 foreach (DynamicFormEntry::forTicket($ticket->getId()) as $idx=>$form) {
     $answers = $form->getAnswers();
+    
+    $countAnswers = 0;
+    foreach ($answers as $answer) {
+        // if the table would be empty (the one with the xoo and deptcopy), don't generate it
+        if($answer->getField()->getDigitSelector()==0 && !$answer->getField()->isDeptNameCopy()
+          && !$answer->getField()->get('private')) {
+            $countAnswers++;
+        }
+    }
+    
+    if($countAnswers==0) {
+        continue;
+    }
+    
     if ($idx > 0 and $idx % 2 == 0) { ?>
         </tr><tr>
     <?php } ?>
@@ -90,6 +105,8 @@ foreach (DynamicFormEntry::forTicket($ticket->getId()) as $idx=>$form) {
             continue;
         elseif ($answer->getField()->get('private'))
             continue;
+        elseif ($answer->getField()->getDigitSelector()>0 || $answer->getField()->isDeptNameCopy())
+            continue; //just in case this info leaked through
         ?>
         <tr>
         <th width="100"><?php echo $answer->getField()->get('label');
