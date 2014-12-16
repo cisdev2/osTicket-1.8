@@ -618,6 +618,7 @@ print $response_form->getField('attachments')->render();
                     foreach (TicketStatusList::getStatuses(
                                 array('states' => $states)) as $s) {
                         if (!$s->isEnabled()) continue;
+                        if ($s->getName()=="Resolved") continue; //disable the resolved state
                         $selected = ($statusId == $s->getId());
                         echo sprintf('<option value="%d" %s>%s%s</option>',
                                 $s->getId(),
