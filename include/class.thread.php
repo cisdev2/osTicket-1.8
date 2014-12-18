@@ -1348,8 +1348,8 @@ class ThreadBody /* extends SplString */ {
 			$this->body = preg_replace('/<div class="gmail_extra">.*/si',"",$this->body);
             
             // for gmail footers, raw text
-            // regex: On .*wrote:(.|\n)*
-            $this->body = preg_replace('/On .*wrote:(.|\n)*/si',"",$this->body);
+            // regex: On (.|\n|\r)*wrote:(.|\n|\r)*
+            $this->body = preg_replace('/On (.|\n|\r)*wrote:(.|\n|\r)*/si',"",$this->body);
             
 			// for outlook footers
 			// regex: <p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>
