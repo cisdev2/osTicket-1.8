@@ -1347,9 +1347,14 @@ class ThreadBody /* extends SplString */ {
 			// regex: <div class="gmail_extra">.*
 			$this->body = preg_replace('/<div class="gmail_extra">.*/si',"",$this->body);
             
-            // for gmail footers, raw text
-            // regex: On (.|\n|\r)*wrote:(.|\n|\r)*
-            $this->body = preg_replace('/On (.|\n|\r)*wrote:(.|\n|\r)*/si',"",$this->body);
+            // generic footers, raw text or html
+            // regex: On (.|\n|\r){5,35},(.|\n|\r){5,40}wrote:(.|\n|\r)*
+            // note: we max it out at 35/40 in the case some one has a legit instance of On...wrote:
+            $this->body = preg_replace('/On (.|\n|\r){5,35},(.|\n|\r){5,40}wrote:(.|\n|\r)*/si',"",$this->body);
+            
+            // thunderbird footers
+            // regex: <div class="moz-cite-prefix">(.|\n|\r)*
+            $this->body = preg_replace('/<div class="moz-cite-prefix">(.|\n|\r)*/si',"",$this->body);
             
 			// for outlook footers
 			// regex: <p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>
