@@ -147,7 +147,9 @@ if ($_POST)
         <tr>
             <td colspan="2">
                 <textarea class="richtext no-bar" name="note" cols="21"
-                    rows="6" style="width:80%;"><?php echo $info['note'];
+                    rows="6" style="width:80%;"><?php if(!empty($info['note'])) {
+                    echo $info['note'];
+                } else { echo 'Categorized Request.';}
                     ?></textarea>
             </td>
         </tr>
