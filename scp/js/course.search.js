@@ -10,6 +10,10 @@ var bindCourseSearch = function(){
         // don't actually do the browser default
         e.preventDefault();
 
+        // need to reset this because pjax doesn't reset the hidden form
+        // (in the case that a previous search's data is still there)
+        $('#advanced-search form')[0].reset();
+        
         //reset previous attempts (eg. if invalid department)
         $('#course_search input').css("background-color","#fff");
         $('.nocourseresults').hide(200);
