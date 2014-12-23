@@ -3,19 +3,20 @@
 	Adds quick course search to tickets page
 **/
 
-$(document).ready(function(){
+var bindCourseSearch = function(){
     
-    function searchByCourse(e) {
+    //inner function that actually completes the search
+    var searchByCourse = function(e) {
         // don't actually do the browser default
         e.preventDefault();
-        
+
         //reset previous attempts (eg. if invalid department)
         $('#course_search input').css("background-color","#fff");
         $('.nocourseresults').hide(200);
-        
+
         // get the user input
         var coursedata = $('#course_search input').val().trim().replace(' ','').replace('.','');
-        
+
         // check if dept valid
         var coursedept = coursedata.substring(0,4);
         var found = false;
@@ -25,18 +26,18 @@ $(document).ready(function(){
                 found = true;
             }
         });
-            
+
         // if the dept was not found, give an error
         if(!found) {
             $('#course_search input').css("background-color","#eab7b7");
             return;
         }
-        
+
         // deal with number
         digit1 = coursedata.charAt(4);
         digit2 = coursedata.charAt(5);
         digit3 = coursedata.charAt(6);
-        
+
         // if any of them is numeric, just inject it; otherwise, "wildcard"
         if($.isNumeric(digit1)) {
             $('.coursedigit1').val($('.coursedigit1 .number' + digit1).val());
@@ -47,13 +48,13 @@ $(document).ready(function(){
         if($.isNumeric(digit3)) {
             $('.coursedigit3').val($('.coursedigit3 .number' + digit3).val());
         }
-        
+
         // trigger the form and redirect the user
         $('.courseloading').show(200); //show loading animation
         $('#course_search input').css("background-color","#b7eacf");
         // even through the form is hidden, we can still submit the previous injected values
         $('#advanced-search form').submit();
-        
+
         function courseloaded() {
             // even through the advanced form is hidden, we can still access the search results
             if($('#result-count .fail').length>0) {
@@ -72,15 +73,16 @@ $(document).ready(function(){
                 setTimeout(courseloaded,500);
             }
         }
-        
+
         // wait for the form to get a response...
         setTimeout(courseloaded,500);
-        
+
     }
     
     // bind the button or the "enter" key to the function above
     $('#course_search form').submit(searchByCourse);
     $('#course_search button').click(searchByCourse);
 
-});
-    
+}
+
+$(document).ready(bindCourseSearch);
