@@ -568,8 +568,10 @@ if ($results) {
                 <?php
                 foreach (TicketStatusList::getStatuses(
                             array('states' => array('open', 'closed'))) as $s) {
-                    echo sprintf('<option data-state="%s" value="%d">%s</option>',
-                            $s->getState(), $s->getId(), __($s->getName()));
+                    if($s->getName()!="Resolved") { //disable the resolved state
+                        echo sprintf('<option data-state="%s" value="%d">%s</option>',
+                                $s->getState(), $s->getId(), __($s->getName()));
+                    }
                 }
                 ?>
             </select>
