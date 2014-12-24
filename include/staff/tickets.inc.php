@@ -309,7 +309,7 @@ if ($results) {
 <div id='course_search'>
     <table>
         <tr>
-            <td class="searchdesc"><form><strong>Course search: </strong><input placeholder="apsc.150" type="text" size=30 value=""
+            <td class="searchdesc"><form><strong>Course search: </strong><input placeholder="currently not working" type="text" size=30 value=""
                 autocomplete="off" autocorrect="off" autocapitalize="off"></form></td>
             <td>
                 <button type="button" class="button"><?php echo __('Search'); ?></button>

@@ -19,16 +19,7 @@
         if (!$field->isVisibleToUsers())
             continue;
         ?>
-        <tr class="<?php
-        //$field->get('name')
-        
-            if($field->isDeptNameCopy()) {
-                echo 'deptnamecopy';
-            }else if($field->getDigitSelector()>0) {
-                echo 'coursedigits';
-            }
-        
-            ?>">
+        <tr>
             <?php if ($field->isBlockLevel()) { ?>
                 <td colspan="2">
             <?php

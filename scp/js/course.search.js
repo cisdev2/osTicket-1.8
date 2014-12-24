@@ -5,6 +5,9 @@
 
 var bindCourseSearch = function(){
     
+    // work in progress
+    
+    /*
     //inner function that actually completes the search
     var searchByCourse = function(e) {
         // don't actually do the browser default
@@ -86,6 +89,7 @@ var bindCourseSearch = function(){
     // bind the button or the "enter" key to the function above
     $('#course_search form').submit(searchByCourse);
     $('#course_search button').click(searchByCourse);
+    */
 
 }
 

@@ -22,9 +22,9 @@ if ($_POST) {
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept junk...only topicId is expected.
 	
 	if(empty($vars['message'])) {
-		$vars['message'] = $vars['coursesubject'] . ' ' . Topic::getTopicName($vars['topicId']);
+		$vars['message'] = Topic::getTopicName($vars['topicId']);
 	}
-	$vars['subject'] = $vars['coursesubject'] . ' ' . Topic::getTopicName($vars['topicId']);
+	$vars['subject'] = Topic::getTopicName($vars['topicId']);
 	
 	if($vars['autorespond']=='true') {
 		$vars['autorespond'] = true;

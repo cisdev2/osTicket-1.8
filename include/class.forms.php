@@ -224,36 +224,6 @@ class FormField {
     function set($field, $value) {
         $this->ht[$field] = $value;
     }
-    
-    // is this one of the digit dropdowns
-    // [1,3] if yes
-    // 0 if not
-    function getDigitSelector() {
-        if($this->get('name')=='xoo') {
-            return 1;
-        } else if($this->get('name')=='oxo') {
-            return 2;
-        } else if($this->get('name')=='oox') {
-            return 3;
-        }
-        
-        return 0;
-    }
-    
-    // is this were the user entered the course number
-    function isCourseNumberSelector() {
-        return $this->get('name')=='courseno';
-    }
-    
-    // is this the primary program selector
-    function isProgramSelector() {
-        return $this->get('name')=='program';
-    }
-    
-    //this field invisibly duplicates the value above in the form
-    function isDeptNameCopy() {
-        return $this->get('name')=='deptnamecopy';
-    }
 
     /**
      * getClean
@@ -1740,14 +1710,8 @@ class TextboxWidget extends Widget {
         if (isset($config['disabled']))
             $disabled = 'disabled="disabled"';
         ?>
-        <span style="display:inline-block"><?php 
-            if($this->field->isCourseNumberSelector()) {
-                // if this is a course selection box, we create a field for the deparment name
-                // the value gets copied by open.client.js
-                echo '<input type="text" disabled class="deptname" size="4" value="" />';
-            }
-        ?>
-        <input class="<?php if($this->field->isCourseNumberSelector()) {echo "courseno";} ?>" type="<?php echo static::$input_type; ?>"
+        <span style="display:inline-block">
+        <input type="<?php echo static::$input_type; ?>"
             id="<?php echo $this->id; ?>"
             <?php echo implode(' ', array_filter(array(
                 $size, $maxlength, $classes, $autocomplete, $disabled)))
@@ -1879,20 +1843,7 @@ class ChoicesWidget extends Widget {
             $values = $have_def ? array($def_key => $choices[$def_key]) : array();
 
         ?>
-        <select class="<?php 
-        
-        if($this->field->isProgramSelector()) { 
-            // this is the dept selection
-            // we add this css class so open.client.js will work
-            echo 'deptnamesrc';
-        } else if($this->field->isDeptNameCopy()) {
-            echo 'deptnamevalue';
-        } else if($this->field->getDigitSelector()>0) {
-            // this is the xoo dropdown, add a css class
-            echo 'coursedigit' . $this->field->getDigitSelector();
-        }
-                       
-                       ?>" name="<?php echo $this->name; ?>[]"
+        <select name="<?php echo $this->name; ?>[]"
             id="<?php echo $this->id; ?>"
             data-prompt="<?php echo $prompt; ?>"
             <?php if ($config['multiselect'])
@@ -1904,11 +1855,7 @@ class ChoicesWidget extends Widget {
             foreach ($choices as $key => $name) {
                 if (!$have_def && $key == $def_key)
                     continue; ?>
-                <option class="<?php
-                        if($this->field->getDigitSelector()) {
-                            echo 'number' . $name;
-                        }       
-                               ?>" value="<?php echo $key; ?>" <?php
+                <option value="<?php echo $key; ?>" <?php
                     if (isset($values[$key])) echo 'selected="selected"';
                 ?>><?php echo $name; ?></option>
             <?php } ?>

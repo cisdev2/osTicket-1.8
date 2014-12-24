@@ -35,14 +35,12 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 }
 
 ?>
-<script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/open.client.js"></script>
 <h1><?php if(!$internalSingleForm) { echo __('Submit a New Request'); } else { echo $topic->getName(); }?></h1>
 <p>Fields that have a <img src="/assets/default/images/icons/required.png" alt="Required" /> are mandatory.</p>
 <!--<p class="nomargin"><?php echo __('Please fill in the form below to submit a new request.');?></p>-->
 <form id="ticketForm" method="post" action="open.php<?php if($internalSingleForm) { echo '?id='.$internalTopicId;}?>" enctype="multipart/form-data">
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
-    <input type="hidden" class="coursesubject" name="coursesubject" value="">
   <table width="800" cellpadding="1" cellspacing="0" border="0">
     <tbody>
     <tr <?php if($internalSingleForm) {echo 'style="height:1px;border:none"';} ?>>
