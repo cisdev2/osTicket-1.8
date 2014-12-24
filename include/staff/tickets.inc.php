@@ -498,7 +498,7 @@ if ($results) {
                 <?php
                 }
                 ?>
-                <td nowrap>&nbsp;<?php echo $lc; ?></td>
+                <td <?php if(empty(trim($lc))) {echo 'style="background-color:#FEE7E7;"';} ?> nowrap>&nbsp;<?php echo $lc; ?></td>
             </tr>
             <?php
             } //end of while.
