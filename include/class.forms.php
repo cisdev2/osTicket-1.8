@@ -225,6 +225,17 @@ class FormField {
         $this->ht[$field] = $value;
     }
 
+    
+    // is this were the user entered the course number
+    function isCourseNumberSelector() {
+        return $this->get('name')=='courseno';
+    }
+    
+    // is this the primary program selector
+    function isProgramSelector() {
+        return $this->get('name')=='program';
+    }
+    
     /**
      * getClean
      *
@@ -1711,7 +1722,14 @@ class TextboxWidget extends Widget {
             $disabled = 'disabled="disabled"';
         ?>
         <span style="display:inline-block">
-        <input type="<?php echo static::$input_type; ?>"
+            <?php 
+            if($this->field->isCourseNumberSelector()) {
+                // if this is a course selection box, we create a field for the deparment name
+                // the value gets copied by open.client.js
+                echo '<input type="text" disabled class="deptnamecopy" size="4" value="" />';
+            }
+        ?>
+        <input class="<?php if($this->field->isCourseNumberSelector()) {echo "courseno";} ?>" type="<?php echo static::$input_type; ?>"
             id="<?php echo $this->id; ?>"
             <?php echo implode(' ', array_filter(array(
                 $size, $maxlength, $classes, $autocomplete, $disabled)))
@@ -1843,7 +1861,13 @@ class ChoicesWidget extends Widget {
             $values = $have_def ? array($def_key => $choices[$def_key]) : array();
 
         ?>
-        <select name="<?php echo $this->name; ?>[]"
+        <select class="<?php
+                       if($this->field->isProgramSelector()) { 
+                            // this is the dept selection
+                            // we add this css class so open.client.js will work
+                            echo 'deptnamesrc';
+                        }
+                       ?>" name="<?php echo $this->name; ?>[]"
             id="<?php echo $this->id; ?>"
             data-prompt="<?php echo $prompt; ?>"
             <?php if ($config['multiselect'])
