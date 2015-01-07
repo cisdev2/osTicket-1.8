@@ -23,6 +23,14 @@ require_once(INCLUDE_DIR.'class.json.php');
 require_once(INCLUDE_DIR.'class.dynamic_forms.php');
 require_once(INCLUDE_DIR.'class.export.php');       // For paper sizes
 
+if($_REQUEST['coursesearch']==="true") {
+    $courseQuery = $_REQUEST['query'];
+    $courseQuery = str_replace(' ','',$courseQuery);
+    $courseQuery = str_replace('.','',$courseQuery);
+    $courseQuery = strtoupper($courseQuery); 
+    $_REQUEST['query'] = $courseQuery;
+}
+
 $page='';
 $ticket = $user = null; //clean start.
 //LOCKDOWN...See if the id provided is actually valid and if the user has access.

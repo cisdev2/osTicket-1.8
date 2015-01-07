@@ -6,6 +6,10 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
     $qstr.='status='.urlencode($_REQUEST['status']);
 }
 
+if($_REQUEST['coursesearch']=='true') {
+    $qstr.='coursesearch=true';
+}
+
 //See if this is a search
 $search=($_REQUEST['a']=='search');
 $searchTerm='';
@@ -307,18 +311,19 @@ if ($results) {
 ?>
 <!-- SEARCH FORM START -->
 <div id='course_search'>
+    <form action="tickets.php" method="get">
+    <?php csrf_token(); ?>
+    <input type="hidden" name="a" value="search">
+    <input type="hidden" name="coursesearch" value="true">
     <table>
         <tr>
-            <td class="searchdesc"><form><strong>Course search: </strong><input placeholder="currently not working" type="text" size=30 value=""
-                autocomplete="off" autocorrect="off" autocapitalize="off"></form></td>
-            <td>
-                <button type="button" class="button"><?php echo __('Search'); ?></button>
-                <img class="courseloading hidden" src="./images/ajax-loader.gif" width="16" height="16" />
-                
-            </td>
-            <td style="font-size:0.9em"><strong class="nocourseresults hidden">No Results. </strong>For a numerical wildcard, use <em>x</em> or blanks. The dot is optional or can be a space.</td>
+            <td class="searchdesc"><strong>Course search: </strong><input placeholder="apsc.150" type="text" id="course-ticket-search" name="query" size=30 value="<?php if($_REQUEST['coursesearch']=='true') { echo Format::htmlchars($_REQUEST['query']); } ?>"
+                autocomplete="off" autocorrect="off" autocapitalize="off"></td>
+            <td><input type="submit" name="basic_search" class="button" value="<?php echo __('Search'); ?>"></td>
+            <td style="font-size:0.9em">The course number is optional. The dot is optional or can be a space.</td>
         </tr>
     </table>
+    </form>
     
 </div>
 <!-- SEARCH FORM START -->
@@ -328,7 +333,7 @@ if ($results) {
     <input type="hidden" name="a" value="search">
     <table>
         <tr>
-            <td class="searchdesc"><strong>Regular search: </strong><input type="text" id="basic-ticket-search" name="query" size=30 value="<?php echo Format::htmlchars($_REQUEST['query']); ?>"
+            <td class="searchdesc"><strong>Regular search: </strong><input type="text" id="basic-ticket-search" name="query" size=30 value="<?php if($_REQUEST['coursesearch']!='true') {echo Format::htmlchars($_REQUEST['query']); } ?>"
                 autocomplete="off" autocorrect="off" autocapitalize="off"></td>
             <td><input type="submit" name="basic_search" class="button" value="<?php echo __('Search'); ?>"></td>
             <td>&nbsp;&nbsp;<a href="#" id="go-advanced">[<?php echo __('advanced'); ?>]</a>&nbsp;<i class="help-tip icon-question-sign" href="#advanced"></i></td>
@@ -342,8 +347,8 @@ if ($results) {
 <div>
         <div class="pull-left flush-left">
             <h2><a href="<?php echo Format::htmlchars($_SERVER['REQUEST_URI']); ?>"
-                title="<?php echo __('Refresh'); ?>"><i class="icon-refresh"></i> <?php echo
-                $results_type.$showing; ?></a></h2>
+                title="<?php echo __('Refresh'); ?>"><i class="icon-refresh"></i> <?php if($_REQUEST['coursesearch']!="true") { echo
+                $results_type.$showing; } else { echo $results_type;} ?></a></h2>
         </div>
         <div class="pull-right flush-right">
 
@@ -425,6 +430,22 @@ if ($results) {
         $subject_field = TicketForm::objects()->one()->getField('subject');
         $class = "row1";
         $total=0;
+
+        // === Course search
+        // we don't modify the search query; just the results
+        // so we strip out any results that don't contain the query
+        if($_REQUEST['coursesearch']==="true") {
+            $courseQuery = '[' . $_REQUEST['query']; //we expect an opening [
+            foreach ($results as $key => $row) {
+                $subject = Format::truncate($subject_field->display(
+                    $subject_field->to_php($row['subject']) ?: $row['subject']
+                ), 40);
+                if(strpos($subject,$courseQuery)===false) {
+                    //unset($results[$key]);
+                }
+            }
+        }
+
         if($res && ($num=count($results))):
             $ids=($errors && $_POST['tids'] && is_array($_POST['tids']))?$_POST['tids']:null;
             foreach ($results as $row) {

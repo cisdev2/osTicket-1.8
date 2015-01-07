@@ -21,10 +21,20 @@ if ($_POST) {
     $vars = $_POST;
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept junk...only topicId is expected.
 	
+    if(!empty($vars['coursesubject']) && strlen($vars['coursesubject'])==4) {
+        if(!empty($vars['coursenumber']) && is_numeric($vars['coursenumber']) && strlen($vars['coursenumber'])==3) {
+             $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . $vars['coursenumber'] . '] ';    
+        } else {
+            $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . '] '; 
+        }
+    } else {
+        $subjectPrepend = '';
+    }
+    
 	if(empty($vars['message'])) {
 		$vars['message'] = Topic::getTopicName($vars['topicId']);
 	}
-	$vars['subject'] = Topic::getTopicName($vars['topicId']);
+	$vars['subject'] = $subjectPrepend . Topic::getTopicName($vars['topicId']);
 	
 	if($vars['autorespond']=='true') {
 		$vars['autorespond'] = true;
