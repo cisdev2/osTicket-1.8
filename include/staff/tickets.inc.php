@@ -441,7 +441,7 @@ if ($results) {
                     $subject_field->to_php($row['subject']) ?: $row['subject']
                 ), 40);
                 if(strpos($subject,$courseQuery)===false) {
-                    //unset($results[$key]);
+                    unset($results[$key]);
                 }
             }
         }
