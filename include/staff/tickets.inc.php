@@ -142,7 +142,11 @@ if($search):
             //This sucks..mass scan! search anything that moves!
             require_once(INCLUDE_DIR.'ajax.tickets.php');
 
-            $tickets = TicketsAjaxApi::_search(array('query'=>$queryterm));
+            if($_REQUEST['coursesearch']==="true") {
+                $tickets = TicketsAjaxApi::_search(array());
+            } else {
+                $tickets = TicketsAjaxApi::_search(array('query'=>$queryterm));
+            }
             if (count($tickets)) {
                 $ticket_ids = implode(',',db_input($tickets));
                 $qwhere .= ' AND ticket.ticket_id IN ('.$ticket_ids.')';
@@ -269,6 +273,13 @@ $qfrom.=' LEFT JOIN '.TICKET_LOCK_TABLE.' tlock ON (ticket.ticket_id=tlock.ticke
 TicketForm::ensureDynamicDataView();
 
 $query="$qselect $qfrom $qwhere ORDER BY $order_by $order LIMIT ".$pageNav->getStart().",".$pageNav->getLimit();
+
+// forget about pagination if we are searching for a course
+// we disable it entirely because we don't want to change the search paradigm
+if($_REQUEST['coursesearch']==="true") {
+    $query="$qselect $qfrom $qwhere ORDER BY $order_by $order";
+}
+
 //echo $query;
 $hash = md5($query);
 $_SESSION['search_'.$hash] = $query;
@@ -306,6 +317,28 @@ if ($results) {
     while ($row = db_fetch_array($ids_res)) {
         $results[$row['ticket_id']] += $row;
     }
+}
+
+// === Course search
+// we don't modify the search query; just the results
+// so we strip out any results that don't contain the query
+// scp/tickets.php already takes care of uppercasing, removing spaces, etc
+if($_REQUEST['coursesearch']==="true") {
+    $subject_field = TicketForm::objects()->one()->getField('subject');
+    $numOfResults = 0;
+    $courseQuery = '[' . $_REQUEST['query']; //we expect an opening [
+    foreach ($results as $key => $row) {
+        $subject = Format::truncate($subject_field->display(
+            $subject_field->to_php($row['subject']) ?: $row['subject']
+        ), 40);
+        if(strpos(strtoupper($subject),strtoupper($courseQuery))===false) {
+            unset($results[$key]);
+        } else {
+            $numOfResults += 1;
+        }
+    }
+    $total = $numOfResults;
+    $showing= ' &mdash; Found '.$numOfResults.' matches';
 }
 
 ?>
@@ -347,8 +380,8 @@ if ($results) {
 <div>
         <div class="pull-left flush-left">
             <h2><a href="<?php echo Format::htmlchars($_SERVER['REQUEST_URI']); ?>"
-                title="<?php echo __('Refresh'); ?>"><i class="icon-refresh"></i> <?php if($_REQUEST['coursesearch']!="true") { echo
-                $results_type.$showing; } else { echo $results_type;} ?></a></h2>
+                title="<?php echo __('Refresh'); ?>"><i class="icon-refresh"></i> <?php echo
+                $results_type.$showing; ?></a></h2>
         </div>
         <div class="pull-right flush-right">
 
@@ -430,21 +463,6 @@ if ($results) {
         $subject_field = TicketForm::objects()->one()->getField('subject');
         $class = "row1";
         $total=0;
-
-        // === Course search
-        // we don't modify the search query; just the results
-        // so we strip out any results that don't contain the query
-        if($_REQUEST['coursesearch']==="true") {
-            $courseQuery = '[' . $_REQUEST['query']; //we expect an opening [
-            foreach ($results as $key => $row) {
-                $subject = Format::truncate($subject_field->display(
-                    $subject_field->to_php($row['subject']) ?: $row['subject']
-                ), 40);
-                if(strpos($subject,$courseQuery)===false) {
-                    unset($results[$key]);
-                }
-            }
-        }
 
         if($res && ($num=count($results))):
             $ids=($errors && $_POST['tids'] && is_array($_POST['tids']))?$_POST['tids']:null;
@@ -546,7 +564,10 @@ if ($results) {
     </table>
     <?php
     if($num>0){ //if we actually had any tickets returned.
+        if(($_REQUEST['coursesearch']!="true")) {
+            //pagnation disabled as part of course search
         echo '<div>&nbsp;'.__('Page').':'.$pageNav->getPageLinks().'&nbsp;';
+        }
         echo '<a class="export-csv no-pjax" href="?a=export&h='
             .$hash.'&status='.$_REQUEST['status'] .'">'.__('Export').'</a>&nbsp;<i class="help-tip icon-question-sign" href="#export"></i></div>';
     } ?>

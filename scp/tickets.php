@@ -29,6 +29,12 @@ if($_REQUEST['coursesearch']==="true") {
     $courseQuery = str_replace('.','',$courseQuery);
     $courseQuery = strtoupper($courseQuery); 
     $_REQUEST['query'] = $courseQuery;
+    if(empty($_REQUEST['sort'])) {
+        $_REQUEST['sort'] = 'date';
+    }
+    if(empty($_REQUEST['order'])) {
+        $_REQUEST['order'] = 'DESC';
+    }
 }
 
 $page='';
