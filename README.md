@@ -14,6 +14,15 @@ Some key changes to note:
 - Changed the open.php client page so if an `id` is passed through the URL, the form will pre-select the category (this in effect gives us a separate page for each type of request if we want to send people there directly)
 - Form styling changes (different colors, spacing/padding/margin, removed the red submit button effect, changed the look of the processing popup)
 - Removed the "draft saving" or "draft error" popups to avoid confusing faculty
+- Added a course search functionality, which basically looks for [DEPT XYZ] in the subject line of the ticket
+    - ***KEY NOTE: To fully activate this, make sure the form has a Course Number field with the following settings***
+    - Type: Short Answer
+    - Config: Size 3, Max Length 3, Custom validator, Regular expression: "/\d\d\d/iu" (without the quotes)
+    - Recommended validation error: Please enter 3 digits. See the help text for more info.
+    - Recommended help text: If your request involves many courses, use the lowest course number and list the rest in additional information. If your course has a suffix or refers to a specific section,  enter it under additional information.
+    - Visibility: Required
+    - ***Variable***: courseno
+    
 
 Original README
 --------------------------
