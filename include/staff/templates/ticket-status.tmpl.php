@@ -56,6 +56,7 @@ $action = $info['action'] ?: ('#tickets/status/'. $state);
                             <select name="status_id">
                             <?php
                             foreach ($statuses as $s) {
+                                if ($s->getName()=="Resolved") continue; //disable the resolved state
                                 echo sprintf('<option value="%d" %s>%s</option>',
                                         $s->getId(),
                                         ($info['status_id'] == $s->getId())
