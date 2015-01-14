@@ -32,9 +32,9 @@ select {
 	max-width:550px;
 }
 
-#ticketForm h1, #ticketForm h3 {
+/*#ticketForm h1, #ticketForm h3 {
 	margin:0;
-}
+}*/
 
 .nomargin {
 margin:0;
