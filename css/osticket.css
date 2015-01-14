@@ -89,3 +89,7 @@ input.dp {
 .delete-draft:hover {
     background-color: #fc9f41 !important;
 }
+
+#ui-datepicker-div {
+    z-index: 10 !important;
+}
