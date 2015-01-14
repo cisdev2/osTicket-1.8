@@ -64,7 +64,7 @@ if (($lang = Internationalization::getCurrentLanguage())
         echo sprintf('<div id="notice_bar">%s</div>', $ost->getNotice());
     ?>
     <div id="header">
-        <a href="index.php" class="no-pjax pull-left" id="logo">osTicket &mdash; <?php echo __('Customer Support System'); ?></a>
+        <a href="../" class="no-pjax pull-left" id="logo">osTicket &mdash; <?php echo __('Customer Support System'); ?></a>
         <p id="info" class="pull-right"><?php echo sprintf(__('Welcome, %s.'), '<strong>'.$thisstaff->getFirstName().'</strong>'); ?>
            <?php
             if($thisstaff->isAdmin() && !defined('ADMINPAGE')) { ?>
