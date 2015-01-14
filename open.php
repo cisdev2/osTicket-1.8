@@ -22,7 +22,7 @@ if ($_POST) {
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept junk...only topicId is expected.
 	
     if(!empty($vars['coursesubject']) && strlen($vars['coursesubject'])==4) {
-        if(!empty($vars['coursenumber']) && is_numeric($vars['coursenumber']) && strlen($vars['coursenumber'])==3) {
+        if(!empty($vars['coursenumber']) && (strlen($vars['coursenumber'])==3 || strlen($vars['coursenumber'])==4)) {
              $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . $vars['coursenumber'] . '] ';    
         } else {
             $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . '] '; 

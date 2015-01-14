@@ -19,7 +19,7 @@ $(document).ready(function(){
         //when the number changes, we may have to update the field
         $('.courseno').change(function() {
             var digits = $(this).val();
-            if(digits.length==3) {
+            if(digits.length==3 || digits.length==4) {
                 $('.coursenumber').attr('value',digits);
             }
         });
