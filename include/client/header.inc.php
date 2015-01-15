@@ -159,7 +159,7 @@ header("Content-Type: text/html; charset=UTF-8\r\n");
 							<li<?php if($activemenu['home'] || $activemenu['new']) {echo ' class="active"';} ?>><a href="<?php echo ROOT_PATH; ?>">Submit a Request</a></li>
                             <!--<li<?php if($activemenu['new']) {echo ' class="active"';} ?>><a href="<?php echo ROOT_PATH; ?>open.php">Submit a Request</a></li>-->
                             <li<?php if($activemenu['status']) {echo ' class="active"';} ?>><a href="<?php echo ROOT_PATH; ?>view.php">Check a Request Status</a></li>
-                            <li><a href="http://cis.apsc.ubc.ca">Go Back to the CIS Website</a></li>
+                            <li><a href="http://cis.apsc.ubc.ca">CIS Website</a></li>
 							<!--
                             <li class="dropdown">
                                 <div class="btn-group">
