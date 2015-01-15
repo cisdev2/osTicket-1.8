@@ -104,7 +104,7 @@ $info=Format::htmlchars(($errors && $_POST)?$_POST:$info);
         </tr>
          <tr>
             <td colspan=2 style="padding-left:3px;">
-                <textarea name="body" cols="21" rows="12" style="width:98%;" class="richtext draft"
+                <textarea name="body" cols="21" rows="12" style="width:98%;" <?php if($info['id']!=1) { ?> class="richtext draft" <?php } ?>
                     data-draft-namespace="page" data-draft-object-id="<?php //echo $info['id']; ?>"
                     ><?php echo $info['body']; ?></textarea>
             </td>
