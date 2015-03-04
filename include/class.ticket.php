@@ -1156,7 +1156,7 @@ class Ticket {
         }
 
         // Reopen if closed AND reopenable
-        if ($this->isClosed() && $this->isReopenable())
+        if ($autorespond && $this->isClosed() && $this->isReopenable())
             $this->reopen();
 
        /**********   double check auto-response  ************/
