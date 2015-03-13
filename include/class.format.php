@@ -507,8 +507,16 @@ class Format {
         if(!$gmtimestamp || !is_numeric($gmtimestamp))
             return "";
 
-        $offset+=$daylight?date('I', $gmtimestamp):0; //Daylight savings crap.
-
+      // Problem lies with the fact that sometimes Vancouver is 7 or 8 hours behind GMT
+      // date('I', $gmtimestamp) will take care of that
+      // However, it will be the wrong value if the server has the wrong zone set 
+      // So we temporarily change it to Vancouver and change it back to the server time
+      // to avoid glitching other osTicket code that calculates off the original zone
+      $currentTimezone = date_default_timezone_get();
+      date_default_timezone_set('America/Vancouver');
+      $offset+=$daylight?date('I', $gmtimestamp):0; //Daylight savings.
+      date_default_timezone_set($currentTimezone);
+      
         return date($format, ($gmtimestamp+ ($offset*3600)));
     }
 
