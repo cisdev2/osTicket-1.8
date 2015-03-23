@@ -1342,35 +1342,6 @@ class ThreadBody /* extends SplString */ {
         // Strip the quoted part of the body
         if ((list($msg) = explode($tag, $this->body, 2)) && trim($msg)) {
             $this->body = $msg;
-
-			
-			// http://www.regexr.com/
-			// put regex like this: preg_replace('/REGEXGOESHERE/si',.....)
-            
-			// for gmail footers with html
-			// regex: <div class="gmail_extra">.*
-			$this->body = preg_replace('/<div class="gmail_extra">.*/si',"",$this->body);
-            
-            // generic footers, raw text or html
-            // regex: On (.|\n|\r){5,35},(.|\n|\r){5,40}wrote:(.|\n|\r)*
-            // note: we max it out at 35/40 in the case some one has a legit instance of On...wrote:
-            $this->body = preg_replace('/On (.|\n|\r){5,35},(.|\n|\r){5,40}wrote:(.|\n|\r)*/si',"",$this->body);
-            
-            // alternate generic plain text (see Rizhi Wang)
-			// regex: From:(.|\n|\r){5,35}Sent:(.|\n|\r){5,40}To:(.|\n|\r)*
-			$this->body = preg_replace('/From:(.|\n|\r){5,35}Sent:(.|\n|\r){5,40}To:(.|\n|\r)*/si',"",$this->body);
-            
-            // alternate generic plain text or html (see Rizhi Wang)
-			// regex: From:(.|\n|\r)*mailto:support@cisticket.ca(.|\n|\r)*
-			$this->body = preg_replace('/From:(.|\n|\r)*mailto:support@cisticket.ca(.|\n|\r)*/si',"",$this->body);
-            
-            // thunderbird footers
-            // regex: <div class="moz-cite-prefix">(.|\n|\r)*
-            $this->body = preg_replace('/<div class="moz-cite-prefix">(.|\n|\r)*/si',"",$this->body);
-            
-			// for outlook footers
-			// regex: <p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>
-			$this->body = preg_replace('/<p class="MsoNormal"><b>.*From:.*Sent.*To.*<\/p>/si',"",$this->body);
 			
             // Capture a list of dropped inline images
             if ($images_before) {
