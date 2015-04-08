@@ -32,7 +32,7 @@
             }
             $field->render('client'); ?>
             <?php if ($field->get('required')) { ?>
-                <font class="error">*</font>
+                <img src="<?php echo ROOT_PATH; ?>cisticket/required.png" alt="Required" />
             <?php
             }
             if ($field->get('hint') && !$field->isBlockLevel()) { ?>
