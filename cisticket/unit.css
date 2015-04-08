@@ -1,0 +1,94 @@
+/* Unit editable CSS */
+
+/*  Repurposed for general CISTicket global styling to be applied
+    - Prefer to override instead of change original stylesheets to make git diffs nicer
+    - As such, this stylesheet should be loaded last
+*/
+
+/** Unit Bar background color **/
+#ubc7-unit {
+   background:#b00000;
+}
+
+/** Social Icons **/
+#ubc7-unit-social-icons i {
+    color: #002145;
+}
+
+#clientLogin div textarea {
+    background: transparent;
+}
+
+#clientLogin input[type=submit] {
+    background: #002145;
+}
+
+#loading {
+    background: rgb( 255, 255, 255) url('../images/FhHRx-Spinner.gif') 30px 50% no-repeat;
+    z-index: 9001;
+    width: auto;
+    height: auto;
+}
+
+#loading h4 {
+    margin: inherit;
+    padding: inherit;
+    color: inherit;
+}
+
+#loadinginner {
+    margin: 30px;
+}
+
+#ui-datepicker-div {
+    z-index: 10 !important;
+}
+
+#clfcompatibilty {
+    padding: 1em;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.container, #ubc7-unit-menu .container {
+    max-width: 960px;
+}
+
+input, textarea, .uneditable-input {
+    width: auto;
+    max-width:550px;
+}
+
+select {
+    width: auto;
+    max-width:550px;
+}
+
+#ticketForm input, #ticketForm select {
+    margin:0;
+}
+
+.redactor_editor {
+    border: 1px solid #bbb;
+}
+
+.redactor_toolbar {
+    border: 1px solid #bbb;
+    box-shadow: none;
+}
+
+#reply {
+    padding: 10px 25px;
+}
+
+#ubc7-unit {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+#ticketForm table label {
+    margin: 6px 10px 0 0;
+    text-align: right;
+    font-weight: 700;
+}

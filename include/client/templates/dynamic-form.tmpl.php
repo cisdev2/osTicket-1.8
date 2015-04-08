@@ -3,14 +3,6 @@
     // space below.
     // XXX: Would be nice to handle the decoration with a CSS class
     ?>
-    <tr><td colspan="2"><hr />
-    <div class="form-header" style="margin-bottom:0.5em">
-    <?php print ($form instanceof DynamicFormEntry) 
-        ? $form->getForm()->getMedia() : $form->getMedia(); ?>
-    <h3><?php echo Format::htmlchars($form->getTitle()); ?></h3>
-    <em><?php echo Format::htmlchars($form->getInstructions()); ?></em>
-    </div>
-    </td></tr>
     <?php
     // Form fields, each with corresponding errors follows. Fields marked
     // 'private' are not included in the output for clients

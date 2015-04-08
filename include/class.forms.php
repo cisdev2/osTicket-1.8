@@ -1941,8 +1941,8 @@ class CheckboxWidget extends Widget {
             echo $this->field->get('id'); ?>"/>
         <?php
         if ($config['desc']) { ?>
-            <em style="display:inline-block"><?php
-            echo Format::viewableImages($config['desc']); ?></em>
+            <span style="display:inline-block"><?php
+            echo Format::viewableImages($config['desc']); ?></span>
         <?php }
     }
 

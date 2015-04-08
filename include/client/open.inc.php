@@ -23,14 +23,14 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 
 ?>
 <h1><?php echo __('Open a New Ticket');?></h1>
-<p><?php echo __('Please fill in the form below to open a new ticket.');?></p>
+<p>Fields that have a <img src="<?php echo ROOT_PATH; ?>cisticket/required.png" alt="Required" /> are mandatory.</p>
 <form id="ticketForm" method="post" action="open.php" enctype="multipart/form-data">
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
   <table width="800" cellpadding="1" cellspacing="0" border="0">
     <tbody>
     <tr>
-        <td class="required"><?php echo __('Help Topic');?>:</td>
+        <td class="required"><label><?php echo __('Request Topic');?>:</label></td>
         <td>
             <select id="topicId" name="topicId" onchange="javascript:
                     var data = $(':input[name]', '#dynamic-form').serialize();
@@ -56,7 +56,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                 <?php
                 } ?>
             </select>
-            <font class="error">*&nbsp;<?php echo $errors['topicId']; ?></font>
+            <font class="error"><img src="<?php echo ROOT_PATH; ?>cisticket/required.png" alt="Required" /><?php echo $errors['topicId']; ?></font>
         </td>
     </tr>
 <?php
@@ -104,16 +104,17 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     <tr><td colspan=2>&nbsp;</td></tr>
     </tbody>
   </table>
-<hr/>
   <p style="text-align:center;">
-        <input type="submit" value="<?php echo __('Create Ticket');?>">
-        <input type="reset" name="reset" value="<?php echo __('Reset');?>">
-        <input type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
+        <input class="btn btn-large" type="submit" value="<?php echo __('Create Ticket');?>">
+        <p style="text-align:center;">
+        <input class="btn btn-info" type="reset" name="reset" value="<?php echo __('Reset');?>">
+        <input class="btn btn-info" type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
             $('.richtext').each(function() {
                 var redactor = $(this).data('redactor');
                 if (redactor && redactor.opts.draftDelete)
                     redactor.deleteDraft();
             });
             window.location.href='index.php';">
+        </p>
   </p>
 </form>
