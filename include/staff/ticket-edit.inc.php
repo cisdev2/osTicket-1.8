@@ -148,6 +148,7 @@ if ($_POST)
             <td colspan="2">
                 <textarea class="richtext no-bar" name="note" cols="21"
                     rows="6" style="width:80%;"><?php echo $info['note'];
+                    if(empty($info['note'])) { echo 'Categorized Request.'; } // default message when editing ticket
                     ?></textarea>
             </td>
         </tr>
