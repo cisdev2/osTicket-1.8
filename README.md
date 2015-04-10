@@ -3,7 +3,7 @@ CISTicket
 
 Modifications done to osTicket for the Centre for Instructional Support's (at UBC) helpdesk system.
 
-To view the files that have changed from osTicket, [click here](https://github.com/cisdev2/osTicket-1.8/compare/c18eac40de95458ef3c6291f5f7bb7543bb1d086...cisticket), OR stay on this branch (cisticket) and view the commits since the branch was created (since commit [c18eac40de95458ef3c6291f5f7bb7543bb1d086](https://github.com/cisdev2/osTicket-1.8/commit/c18eac40de95458ef3c6291f5f7bb7543bb1d086) ).
+To view the files that have changed from osTicket, [click here](https://github.com/cisdev2/osTicket-1.8/compare/c18eac40de95458ef3c6291f5f7bb7543bb1d086...cisticket-2014), OR stay on this branch (cisticket-2014) and view the commits since the branch was created (since commit [c18eac40de95458ef3c6291f5f7bb7543bb1d086](https://github.com/cisdev2/osTicket-1.8/commit/c18eac40de95458ef3c6291f5f7bb7543bb1d086) ).
 
 Some key changes to note:
 - Integrated the UBC CLF to the client front-end (added the stylesheets and changed the header/footer include files for the client view)
