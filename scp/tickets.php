@@ -79,6 +79,10 @@ if($_POST && !$errors):
             $vars = $_POST;
             $vars['cannedattachments'] = $response_form->getField('attachments')->getClean();
 
+            //Replace triple (or more) <br> chain with a max of 2 <br>
+            //Redactor (WYSIWYG editor) on Windows, inserts too many because of how Windows does new lines
+            $vars['response'] = preg_replace('/(<br *\/?>\s*){3,}/i', '<br /><br />', $vars['response']);
+
             if(!$errors && ($response=$ticket->postReply($vars, $errors, $_POST['emailreply']))) {
                 $msg = sprintf(__('%s: Reply posted successfully'),
                         sprintf(__('Ticket #%s'),
