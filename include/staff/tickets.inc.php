@@ -487,8 +487,12 @@ if ($results) {
                     <?php echo $row['priority_desc']; ?></td>
                 <?php
                 }
+                if(empty(trim($lc))) {
                 ?>
+                <td style="background-color:#FEE7E7;" nowrap>&nbsp;<?php echo $lc; ?></td>
+                <?php } else { ?>
                 <td nowrap>&nbsp;<?php echo $lc; ?></td>
+                <?php } ?>
             </tr>
             <?php
             } //end of while.
