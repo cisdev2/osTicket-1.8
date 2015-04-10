@@ -74,7 +74,7 @@ if (($lang = Internationalization::getCurrentLanguage())
             | <a href="profile.php"><?php echo __('My Preferences'); ?></a>
             | <a href="logout.php?auth=<?php echo $ost->getLinkToken(); ?>" class="no-pjax"><?php echo __('Log Out'); ?></a>
         </p>
-        <a href="index.php" class="no-pjax" id="logo">
+        <a href="<?php echo ROOT_PATH; ?>" class="no-pjax" id="logo">
             <span class="valign-helper"></span>
             <img src="logo.php" alt="osTicket &mdash; <?php echo __('Customer Support System'); ?>"/>
         </a>
