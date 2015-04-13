@@ -50,7 +50,7 @@ if($ticket->isOverdue())
     $warn.='&nbsp;&nbsp;<span class="Icon overdueTicket">'.__('Marked overdue!').'</span>';
 
 ?>
-<table width="940" cellpadding="2" cellspacing="0" border="0">
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
         <td width="20%" class="has_bottom_border">
              <h2><a href="tickets.php?id=<?php echo $ticket->getId(); ?>"
