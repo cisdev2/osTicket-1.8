@@ -128,7 +128,8 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
   </label>
   <p style="text-align:center;">
         <input class="btn btn-large" type="submit" value="<?php echo __('Create Ticket');?>">
-        <p style="text-align:center;">
+  </p>
+  <p style="text-align:center;">
         <input class="btn btn-info" type="reset" name="reset" value="<?php echo __('Reset');?>">
         <input class="btn btn-info" type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
             $('.richtext').each(function() {
@@ -137,6 +138,5 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                     redactor.deleteDraft();
             });
             window.location.href='index.php';">
-        </p>
   </p>
 </form>
