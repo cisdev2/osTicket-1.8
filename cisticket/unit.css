@@ -97,3 +97,23 @@ select {
     display: inline-block;
     min-width: 110px;
 }
+
+/*
+Note that
+.container => UBC CLF and client-view
+#container => osTicket agent panel
+*/
+#container {
+    width: 100%;
+    min-width: 960px;
+    max-width: 1200px;
+}
+
+table.list, table.thread-entry, table.ticket_info, table.form_table  {
+    width: 100%;
+}
+
+table.thread-entry {
+    max-width: 880px;
+    margin: 0 auto;
+}
