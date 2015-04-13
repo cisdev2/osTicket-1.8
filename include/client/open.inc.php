@@ -9,6 +9,15 @@ if($thisclient && $thisclient->isValid()) {
 
 $info=($_POST && $errors)?Format::htmlchars($_POST):$info;
 
+$singleTopicId = $_GET['id'];
+$singleTopic = Topic::lookup($singleTopicId);
+if(!$singleTopic) {
+    $isSingleTopic = false;
+} else {
+    $info['topicId'] = $singleTopicId;
+    $isSingleTopic = true;
+}
+
 $form = null;
 if (!$info['topicId'])
     $info['topicId'] = $cfg->getDefaultTopicId();
@@ -22,16 +31,24 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 }
 
 ?>
+<?php if($isSingleTopic) { ?>
+<h1><?php echo $topic->getName();?></h1>
+<?php } else { ?>
 <h1><?php echo __('Open a New Ticket');?></h1>
+<?php } ?>
 <p>Fields that have a <img src="<?php echo ROOT_PATH; ?>cisticket/required.png" alt="Required" /> are mandatory.</p>
-<form id="ticketForm" method="post" action="open.php" enctype="multipart/form-data">
+<form id="ticketForm" method="post" action="open.php<?php if($isSingleTopic) { echo '?id='.$singleTopicId;}?>" enctype="multipart/form-data">
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
   <input type="hidden" class="coursesubject" name="coursesubject" value="">
   <input type="hidden" class="coursenumber" name="coursenumber" value="">
   <table width="800" cellpadding="1" cellspacing="0" border="0">
     <tbody>
+    <?php if($isSingleTopic) { ?>
+    <tr style="display:none;">
+    <?php } else { ?>
     <tr>
+    <?php } ?>
         <td class="required"><label><?php echo __('Request Topic');?>:</label></td>
         <td>
             <select id="topicId" name="topicId" onchange="javascript:
