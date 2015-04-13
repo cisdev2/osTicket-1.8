@@ -40,6 +40,8 @@ if ($_POST) {
     // inject modified subject
 	$vars['subject'] = $subjectPrepend . Topic::getTopicName($vars['topicId']);
 
+    $vars['autorespond'] = ($vars['autorespond']=='true') ? true : false;
+
     if ($thisclient) {
         $vars['uid']=$thisclient->getId();
     } elseif($cfg->isCaptchaEnabled()) {

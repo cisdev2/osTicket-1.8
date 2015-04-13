@@ -123,6 +123,9 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     <tr><td colspan=2>&nbsp;</td></tr>
     </tbody>
   </table>
+  <label style="text-align:center;" class="checkbox">
+    <input style="float:none;" type="checkbox" name="autorespond" checked="checked" value="true"/> Send a Request Confirmation Email
+  </label>
   <p style="text-align:center;">
         <input class="btn btn-large" type="submit" value="<?php echo __('Create Ticket');?>">
         <p style="text-align:center;">
