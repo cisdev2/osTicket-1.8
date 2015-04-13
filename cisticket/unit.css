@@ -92,3 +92,8 @@ select {
     text-align: right;
     font-weight: 700;
 }
+
+.searchdesc strong {
+    display: inline-block;
+    min-width: 110px;
+}

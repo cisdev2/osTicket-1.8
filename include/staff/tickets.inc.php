@@ -6,6 +6,17 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
     $qs += array('status' => $_REQUEST['status']);
 }
 
+$isCourseSearch = false;
+if($_REQUEST['coursesearch']=='true') {
+    $qs += array('coursesearch' => 'true'); // add this to the URL in case user refreshes or searches again
+    $isCourseSearch = true;
+    $courseQuery = '[' . $_REQUEST['query']; //we expect the tickets to have a subject line of: [DEPT....
+    // we allow spaces and dots to match Connect and/or ipeer search
+    $courseQuery = str_replace(' ','',$courseQuery); //remove spaces
+    $courseQuery = str_replace('.','',$courseQuery); //remove dots
+    $courseQuery = strtoupper($courseQuery);
+}
+
 //See if this is a search
 $search=($_REQUEST['a']=='search');
 $searchTerm='';
@@ -136,7 +147,12 @@ if($search):
             //This sucks..mass scan! search anything that moves!
             require_once(INCLUDE_DIR.'ajax.tickets.php');
 
+            if($isCourseSearch) {
+                // just get all the tickets and filter them in php instead of SQL
+                $tickets = TicketsAjaxApi::_search(array());
+            } else {
             $tickets = TicketsAjaxApi::_search(array('query'=>$queryterm));
+            }
             if (count($tickets)) {
                 $ticket_ids = implode(',',db_input($tickets));
                 $qwhere .= ' AND ticket.ticket_id IN ('.$ticket_ids.')';
@@ -146,6 +162,7 @@ if($search):
             else
                 // No hits -- there should be an empty list of results
                 $qwhere .= ' AND false';
+
         }
    }
 
@@ -154,9 +171,12 @@ endif;
 if ($_REQUEST['advsid'] && isset($_SESSION['adv_'.$_REQUEST['advsid']])) {
     $ticket_ids = implode(',', db_input($_SESSION['adv_'.$_REQUEST['advsid']]));
     $qs += array('advsid' => $_REQUEST['advsid']);
+    $order_by = '';
+    if(!$isCourseSearch) { //$ticket_ids can be very large, so omit it from the query
     $qwhere .= ' AND ticket.ticket_id IN ('.$ticket_ids.')';
     // Thanks, http://stackoverflow.com/a/1631794
     $order_by = 'FIELD(ticket.ticket_id, '.$ticket_ids.')';
+    }
     $order = ' ';
 }
 
@@ -234,17 +254,6 @@ if($search && $deep_search) {
     $sjoin.=' LEFT JOIN '.TICKET_THREAD_TABLE.' thread ON (ticket.ticket_id=thread.ticket_id )';
 }
 
-//get ticket count based on the query so far..
-$total=db_count("SELECT count(DISTINCT ticket.ticket_id) $qfrom $sjoin $qwhere");
-//pagenate
-$pagelimit=($_GET['limit'] && is_numeric($_GET['limit']))?$_GET['limit']:PAGE_LIMIT;
-$page=($_GET['p'] && is_numeric($_GET['p']))?$_GET['p']:1;
-$pageNav=new Pagenate($total,$page,$pagelimit);
-
-$qstr = '&amp;'.http::build_query($qs);
-$qs += array('sort' => $_REQUEST['sort'], 'order' => $_REQUEST['order']);
-$pageNav->setURL('tickets.php', $qs);
-
 //ADD attachment,priorities, lock and other crap
 $qselect.=' ,IF(ticket.duedate IS NULL,IF(sla.id IS NULL, NULL, DATE_ADD(ticket.created, INTERVAL sla.grace_period HOUR)), ticket.duedate) as duedate '
          .' ,CAST(GREATEST(IFNULL(ticket.lastmessage, 0), IFNULL(ticket.closed, 0), IFNULL(ticket.reopened, 0), ticket.created) as datetime) as effective_date '
@@ -263,14 +272,49 @@ $qfrom.=' LEFT JOIN '.TICKET_LOCK_TABLE.' tlock ON (ticket.ticket_id=tlock.ticke
        .' LEFT JOIN '.TABLE_PREFIX.'ticket__cdata cdata ON (cdata.ticket_id = ticket.ticket_id) '
        .' LEFT JOIN '.PRIORITY_TABLE.' pri ON (pri.priority_id = cdata.priority)';
 
+if($isCourseSearch) {
+    // inefficient, but safe, way to calculate number of results php-side instead of through mysql
+    $subject_field = TicketForm::objects()->one()->getField('subject');
+    $total = 0;
+    $query="$qselect $qfrom $qwhere ORDER BY $order_by $order";
+    $res = db_query($query);
+    while ($row = db_fetch_array($res)) {
+
+        $subject = Format::truncate($subject_field->display(
+                    $subject_field->to_php($row['subject']) ?: $row['subject']
+                ), 40);
+        if(strpos(strtoupper($subject),$courseQuery)!==false) {
+            $total += 1;
+        }
+    }
+} else {
+//get ticket count based on the query so far..
+$total=db_count("SELECT count(DISTINCT ticket.ticket_id) $qfrom $sjoin $qwhere");
+}
+//pagenate
+$pagelimit=($_GET['limit'] && is_numeric($_GET['limit']))?$_GET['limit']:PAGE_LIMIT;
+$page=($_GET['p'] && is_numeric($_GET['p']))?$_GET['p']:1;
+$pageNav=new Pagenate($total,$page,$pagelimit);
+
+$qstr = '&amp;'.http::build_query($qs);
+$qs += array('sort' => $_REQUEST['sort'], 'order' => $_REQUEST['order']);
+$pageNav->setURL('tickets.php', $qs);
+
 TicketForm::ensureDynamicDataView();
 
 $query="$qselect $qfrom $qwhere ORDER BY $order_by $order LIMIT ".$pageNav->getStart().",".$pageNav->getLimit();
+if($isCourseSearch) {
+    $query="$qselect $qfrom $qwhere ORDER BY $order_by $order";
+}
 //echo $query;
 $hash = md5($query);
 $_SESSION['search_'.$hash] = $query;
 $res = db_query($query);
+if($isCourseSearch) {
+    $showing=$total? ' &mdash; '.$pageNav->showing():"";
+} else {
 $showing=db_num_rows($res)? ' &mdash; '.$pageNav->showing():"";
+}
 if(!$results_type)
     $results_type = sprintf(__('%s Tickets' /* %s will be a status such as 'open' */),
         mb_convert_case($status, MB_CASE_TITLE));
@@ -305,8 +349,50 @@ if ($results) {
     }
 }
 
+// === Course search
+// strip out any results that don't contain the query
+if($isCourseSearch) {
+    $subject_field = TicketForm::objects()->one()->getField('subject');
+    $lowerLimit = ($page - 1) * $pagelimit; // don't display the first $lowerLimit results
+    $numOfResults = 0;
+    foreach ($results as $key => $row) {
+        $subject = Format::truncate($subject_field->display(
+            $subject_field->to_php($row['subject']) ?: $row['subject']
+        ), 40);
+        if(strpos(strtoupper($subject),$courseQuery)===false) {
+            // if it doesn't meet the criteria, ignore it
+            unset($results[$key]);
+        } elseif($lowerLimit > 0) {
+            // lower bound on pagination, remove it
+            $lowerLimit -= 1;
+            unset($results[$key]);
+        } elseif($numOfResults >= $pagelimit) {
+            // past the limit of tickets to show
+            unset($results[$key]);
+        } else {
+            $numOfResults += 1;
+        }
+    }
+}
+
 //YOU BREAK IT YOU FIX IT.
 ?>
+<!-- COURSE SEARCH FORM -->
+<div id='course_search'>
+    <form action="tickets.php" method="get">
+    <?php csrf_token(); ?>
+    <input type="hidden" name="a" value="search">
+    <input type="hidden" name="coursesearch" value="true">
+    <table>
+        <tr>
+            <td class="searchdesc"><strong>Course search: </strong><input placeholder="apsc.150" type="text" id="course-ticket-search" name="query" size=30 value="<?php if($isCourseSearch) { echo Format::htmlchars($_REQUEST['query']); } ?>"
+                autocomplete="off" autocorrect="off" autocapitalize="off"></td>
+            <td><input type="submit" name="basic_search" class="button" value="<?php echo __('Search'); ?>"></td>
+            <td style="font-size:0.9em">The course number is optional. The dot is optional or can be a space.</td>
+        </tr>
+    </table>
+    </form>
+</div>
 <!-- SEARCH FORM START -->
 <div id='basic_search'>
     <form action="tickets.php" method="get">
@@ -314,9 +400,9 @@ if ($results) {
     <input type="hidden" name="a" value="search">
     <table>
         <tr>
-            <td><input type="text" id="basic-ticket-search" name="query"
-            size=30 value="<?php echo Format::htmlchars($_REQUEST['query'],
-            true); ?>"
+            <td class="searchdesc"><strong>Regular search: </strong><input type="text" id="basic-ticket-search" name="query"
+            size=30 value="<?php if(!$isCourseSearch) { echo Format::htmlchars($_REQUEST['query'],
+            true); } ?>"
                 autocomplete="off" autocorrect="off" autocapitalize="off"></td>
             <td><input type="submit" name="basic_search" class="button" value="<?php echo __('Search'); ?>"></td>
             <td>&nbsp;&nbsp;<a href="#" id="go-advanced">[<?php echo __('advanced'); ?>]</a>&nbsp;<i class="help-tip icon-question-sign" href="#advanced"></i></td>
