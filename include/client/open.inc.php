@@ -34,7 +34,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 <?php if($isSingleTopic) { ?>
 <h1><?php echo $topic->getName();?></h1>
 <?php } else { ?>
-<h1><?php echo __('Open a New Ticket');?></h1>
+<h1><?php echo __('Submit a New Request');?></h1>
 <?php } ?>
 <p>Fields that have a <img src="<?php echo ROOT_PATH; ?>cisticket/required.png" alt="Required" /> are mandatory.</p>
 <form id="ticketForm" method="post" action="open.php<?php if($isSingleTopic) { echo '?id='.$singleTopicId;}?>" enctype="multipart/form-data">
@@ -49,7 +49,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     <?php } else { ?>
     <tr>
     <?php } ?>
-        <td class="required"><label><?php echo __('Request Topic');?>:</label></td>
+        <td class="required"><label><?php echo __('Request Type');?>:</label></td>
         <td>
             <select id="topicId" name="topicId" onchange="javascript:
                     var data = $(':input[name]', '#dynamic-form').serialize();
@@ -63,7 +63,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                           $(document.head).append(json.media);
                         }
                       });">
-                <option value="" selected="selected">&mdash; <?php echo __('Select a Help Topic');?> &mdash;</option>
+                <option value="" selected="selected">&mdash; <?php echo __('Select a Request Type');?> &mdash;</option>
                 <?php
                 if($topics=Topic::getPublicHelpTopics()) {
                     foreach($topics as $id =>$name) {
@@ -127,7 +127,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
     <input style="float:none;" type="checkbox" name="autorespond" checked="checked" value="true"/> Send a Request Confirmation Email
   </label>
   <p style="text-align:center;">
-        <input class="btn btn-large" type="submit" value="<?php echo __('Create Ticket');?>">
+        <input class="btn btn-large" type="submit" value="<?php echo __('Create Request');?>">
   </p>
   <p style="text-align:center;">
         <input class="btn btn-info" type="reset" name="reset" value="<?php echo __('Reset');?>">

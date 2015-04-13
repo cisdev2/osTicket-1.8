@@ -6,7 +6,7 @@ $info=($_POST && $errors)?Format::htmlchars($_POST):array();
 $dept = $ticket->getDept();
 
 if ($ticket->isClosed() && !$ticket->isReopenable())
-    $warn = __('This ticket is marked as closed and cannot be reopened.');
+    $warn = __('This request is marked as complete and cannot be reopened.');
 
 //Making sure we don't leak out internal dept names
 if(!$dept || !$dept->isPublic())
@@ -17,7 +17,7 @@ if(!$dept || !$dept->isPublic())
     <tr>
         <td colspan="2" width="100%">
             <h1>
-                <?php echo sprintf(__('Ticket #%s'), $ticket->getNumber()); ?> &nbsp;
+                <?php echo sprintf(__('Request #%s'), $ticket->getNumber()); ?> &nbsp;
 <?php if ($cfg->allowClientUpdates()
         // Only ticket owners can edit the ticket details (and other forms)
         && $thisclient->getId() == $ticket->getUserId()) { ?>
@@ -31,7 +31,7 @@ if(!$dept || !$dept->isPublic())
         <td width="50%">
             <table class="infoTable" cellspacing="1" cellpadding="3" width="100%" border="0">
                 <tr>
-                    <th width="100"><?php echo __('Ticket Status');?>:</th>
+                    <th width="100"><?php echo __('Request Status');?>:</th>
                     <td><?php echo $ticket->getStatus(); ?></td>
                 </tr>
                 <tr>
@@ -141,7 +141,7 @@ if (!$ticket->isClosed() || $ticket->isReopenable()) { ?>
             <td colspan="2">
                 <?php
                 if($ticket->isClosed()) {
-                    $msg='<b>'.__('Ticket will be reopened on message post').'</b>';
+                    $msg='<b>'.__('The request will be reopened on posting a message.').'</b>';
                 } else {
                     $msg=__('To best assist you, we request that you be specific and detailed');
                 }

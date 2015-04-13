@@ -62,7 +62,7 @@ if ($_POST) {
     Draft::deleteForNamespace('ticket.client.'.substr(session_id(), -12));
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($vars, $errors, SOURCE))){
-        $msg=__('Support ticket request created');
+        $msg=__('Support request created');
         // Drop session-backed form data
         unset($_SESSION[':form-data']);
         //Logged in...simply view the newly created ticket.
@@ -72,7 +72,7 @@ if ($_POST) {
             @header('Location: tickets.php?id='.$ticket->getId());
         }
     }else{
-        $errors['err']=$errors['err']?$errors['err']:__('Unable to create a ticket. Please correct errors below and try again!');
+        $errors['err']=$errors['err']?$errors['err']:__('Unable to create a request. Please correct the errors below and try again!');
     }
 }
 
