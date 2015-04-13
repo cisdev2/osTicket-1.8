@@ -20,6 +20,26 @@ $errors=array();
 if ($_POST) {
     $vars = $_POST;
     $vars['deptId']=$vars['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
+
+    // Check if there's valid subject/department info
+    if(!empty($vars['coursesubject']) && strlen($vars['coursesubject'])==4) {
+        if(!empty($vars['coursenumber']) && (strlen($vars['coursenumber'])==3 || strlen($vars['coursenumber'])==4)) {
+            // check if there's a valid course number
+            $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . $vars['coursenumber'] . '] ';
+        } else {
+            $subjectPrepend = '[' . strtoupper($vars['coursesubject']) . '] ';
+        }
+    } else {
+        $subjectPrepend = '';
+    }
+
+    // fill in a blank message (textarea)
+    if(empty($vars['message'])) {
+		$vars['message'] = Topic::getTopicName($vars['topicId']);
+	}
+    // inject modified subject
+	$vars['subject'] = $subjectPrepend . Topic::getTopicName($vars['topicId']);
+
     if ($thisclient) {
         $vars['uid']=$thisclient->getId();
     } elseif($cfg->isCaptchaEnabled()) {

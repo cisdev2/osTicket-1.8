@@ -218,6 +218,14 @@ class FormField {
                 return $types[$type];
     }
 
+    function isCourseNumberSelector() {
+        return $this->get('name')=='courseno';
+    }
+
+    function isProgramSelector() {
+        return $this->get('name')=='program';
+    }
+
     function get($what) {
         return $this->ht[$what];
     }
@@ -1736,7 +1744,13 @@ class TextboxWidget extends Widget {
             $disabled = 'disabled="disabled"';
         ?>
         <span style="display:inline-block">
+        <?php if($this->field->isCourseNumberSelector()) { ?>
+            <input type="text" disabled class="deptnamecopy" size="4" value="" />
+            <input class="courseno" type="<?php echo static::$input_type; ?>"
+        <?php
+        } else { ?>
         <input type="<?php echo static::$input_type; ?>"
+        <?php } ?>
             id="<?php echo $this->id; ?>"
             <?php echo implode(' ', array_filter(array(
                 $size, $maxlength, $classes, $autocomplete, $disabled)))
@@ -1869,6 +1883,7 @@ class ChoicesWidget extends Widget {
 
         ?>
         <select name="<?php echo $this->name; ?>[]"
+            class="<?php if($this->field->isProgramSelector()) {echo 'deptnamesrc';} ?>"
             id="<?php echo $this->id; ?>"
             data-prompt="<?php echo $prompt; ?>"
             <?php if ($config['multiselect'])

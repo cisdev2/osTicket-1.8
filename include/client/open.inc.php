@@ -27,6 +27,8 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
 <form id="ticketForm" method="post" action="open.php" enctype="multipart/form-data">
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
+  <input type="hidden" class="coursesubject" name="coursesubject" value="">
+  <input type="hidden" class="coursenumber" name="coursenumber" value="">
   <table width="800" cellpadding="1" cellspacing="0" border="0">
     <tbody>
     <tr>
