@@ -117,3 +117,12 @@ table.thread-entry {
     max-width: 880px;
     margin: 0 auto;
 }
+
+.ticketstatuses {
+    position: absolute;
+    right: 0;
+}
+
+.subjectline {
+    position: relative;
+}

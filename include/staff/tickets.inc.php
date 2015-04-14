@@ -448,16 +448,16 @@ if($isCourseSearch) {
             <?php if($thisstaff->canManageTickets()) { ?>
 	        <th width="8px">&nbsp;</th>
             <?php } ?>
-	        <th width="70">
+	        <th width="55">
                 <a <?php echo $id_sort; ?> href="tickets.php?sort=ID&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
                     title="<?php echo sprintf(__('Sort by %s %s'), __('Ticket ID'), __($negorder)); ?>"><?php echo __('Ticket'); ?></a></th>
 	        <th width="70">
                 <a  <?php echo $date_sort; ?> href="tickets.php?sort=date&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
                     title="<?php echo sprintf(__('Sort by %s %s'), __('Date'), __($negorder)); ?>"><?php echo __('Date'); ?></a></th>
-	        <th width="280">
+	        <th width="300">
                  <a <?php echo $subj_sort; ?> href="tickets.php?sort=subj&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
                     title="<?php echo sprintf(__('Sort by %s %s'), __('Subject'), __($negorder)); ?>"><?php echo __('Subject'); ?></a></th>
-            <th width="170">
+            <th width="150">
                 <a <?php echo $name_sort; ?> href="tickets.php?sort=name&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
                      title="<?php echo sprintf(__('Sort by %s %s'), __('Name'), __($negorder)); ?>"><?php echo __('From');?></a></th>
             <?php
@@ -525,7 +525,7 @@ if($isCourseSearch) {
 
                 $subject = Format::truncate($subject_field->display(
                     $subject_field->to_php($row['subject']) ?: $row['subject']
-                ), 40);
+                ), 50);
                 $threadcount=$row['thread_count'];
                 if(!strcasecmp($row['state'],'open') && !$row['isanswered'] && !$row['lock_id']) {
                     $tid=sprintf('<b>%s</b>',$tid);
@@ -544,12 +544,14 @@ if($isCourseSearch) {
                 </td>
                 <?php } ?>
                 <td title="<?php echo $row['email']; ?>" nowrap>
-                  <a class="Icon <?php echo strtolower($row['source']); ?>Ticket ticketPreview"
+                  <a class="ticketPreview"
                     title="<?php echo __('Preview Ticket'); ?>"
                     href="tickets.php?id=<?php echo $row['ticket_id']; ?>"><?php echo $tid; ?></a></td>
-                <td align="center" nowrap><?php echo Format::db_datetime($row['effective_date']); ?></td>
-                <td><a <?php if ($flag) { ?> class="Icon <?php echo $flag; ?>Ticket" title="<?php echo ucfirst($flag); ?> Ticket" <?php } ?>
+                <td nowrap><?php echo Format::db_datetime($row['effective_date']); ?></td>
+                <td class="subjectline">
+                    <a <?php if ($flag) { ?> class="Icon <?php echo $flag; ?>Ticket" title="<?php echo ucfirst($flag); ?> Ticket" <?php } ?>
                     href="tickets.php?id=<?php echo $row['ticket_id']; ?>"><?php echo $subject; ?></a>
+                    <span class="ticketstatuses">
                      <?php
                         if ($threadcount>1)
                             echo "<small>($threadcount)</small>&nbsp;".'<i
@@ -559,6 +561,7 @@ if($isCourseSearch) {
                         if ($row['attachments'])
                             echo '<i class="icon-fixed-width icon-paperclip"></i>&nbsp;';
                     ?>
+                    </span>
                 </td>
                 <td nowrap>&nbsp;<?php echo Format::htmlchars(
                         Format::truncate($row['name'], 22, strpos($row['name'], '@'))); ?>&nbsp;</td>
