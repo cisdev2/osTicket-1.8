@@ -72,6 +72,7 @@ if (($lang = Internationalization::getCurrentLanguage())
             | <a href="index.php" class="no-pjax"><?php echo __('Agent Panel'); ?></a>
             <?php } ?>
             | <a href="http://cisticket.ca/webmail/">support@cisticket.ca webmail</a>
+            | <a href="http://cisticket.ca/cpanel/">Cpanel</a>
             | <a href="profile.php"><?php echo __('My Preferences'); ?></a>
             | <a href="logout.php?auth=<?php echo $ost->getLinkToken(); ?>" class="no-pjax"><?php echo __('Log Out'); ?></a>
         </p>
